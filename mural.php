@@ -49,8 +49,27 @@ if(isset($_POST['cadastra'])){
             <div id="formulario_mural">
                 <form action="" id="mural" method="post">
                     <label for="">Nome:</label>
+                    <input type="text" name="nome"><br/>
+                    <label for="">Email:</label>
+                    <input type="text" name="email"><br/>
+                    <label for="">Mensagem:</label>
+                    <textarea name="mensagem" id="">textarea</textarea>
+                    <input type="submit" value="Publicar no mural" name="cadastra" class="btn"><br/>
                 </form>
             </div>
+
+<?php
+    $seleciona = mysqli_query($conexao, "SELECT * FROM recados ORDER BY id DESC");
+        while($res = mysqli_fetch_assoc($seleciona)){
+            echo '<ul class="recados">';
+            echo '<li><strong>ID:</strong> ' . $res['id'] . '</li>';
+            echo '<li><strong>Nome:</strong> ' . htmlspecialchars($res['nome']) . '</li>';
+            echo '<li><strong>Email:</strong> ' . htmlspecialchars($res['email']) . '</li>';
+            echo '<li><strong>Mensagem:</strong> ' . nl2br(htmlspecialchars($res['mensagem'])) . '</li>';
+            echo '</ul>';
+        }
+?>
+        <div id="footer"></div>
         </div>
     </main>
 </body>
