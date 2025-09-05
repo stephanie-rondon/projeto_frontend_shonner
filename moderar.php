@@ -17,7 +17,7 @@ if(isset($_POST['atualiza'])){
 // Excluir recado
 if(isset($_GET['acao']) && $_GET['acao'] == 'excluir'){
     $id = intval($_GET['id']);
-    mysqli_query($conexao, "DELETE FROM shonner WHERE id=$id") or die("Erro ao deletar: " . mysqli_error($conexao));
+    mysqli_query($conexao, "DELETE FROM recados WHERE id=$id") or die("Erro ao deletar: " . mysqli_error($conexao));
     header("Location: moderar.php");
     exit;
 }
@@ -26,7 +26,7 @@ if(isset($_GET['acao']) && $_GET['acao'] == 'excluir'){
 $editar_id = isset($_GET['acao']) && $_GET['acao'] == 'editar' ? intval($_GET['id']) : 0;
 $recado_editar = null;
 if($editar_id){
-    $res = mysqli_query($conexao, "SELECT * FROM shonner WHERE id=$editar_id");
+    $res = mysqli_query($conexao, "SELECT * FROM recados WHERE id=$editar_id");
     $recado_editar = mysqli_fetch_assoc($res);
 }
 ?>
@@ -38,29 +38,38 @@ if($editar_id){
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div id="main">
-<div id="geral">
-<div id="header">
-    <h1>Mural de pedidos</h1>
-</div>
-
-<?php if($recado_editar): ?>
-<div id="formulario_mural">
-<form method="post">
-    <label>Nome:</label>
-    <input type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/><br/>
-    <label>Email:</label>
-    <input type="text" name="email" value="<?php echo htmlspecialchars($recado_editar['email']); ?>"/><br/>
-    <label>Mensagem:</label>
-    <textarea name="mensagem"><?php echo htmlspecialchars($recado_editar['mensagem']); ?></textarea><br/>
-    <input type="hidden" name="id" value="<?php echo $recado_editar['id']; ?>"/>
-    <input type="submit" name="atualiza" value="Modificar Recado" class="btn"/>
-</form>
-</div>
-<?php endif; ?>
+<main class="mural">
+    <div id="geral-box">
+        <div id="header">
+               <h1>Mural de pedidos</h1>
+        </div>
+        <?php if($recado_editar): ?>
+        <div id="formulario_mural">
+            <form id="moderar" method="post">
+               <div class="items">
+                        <div class="campo-input">
+                            <label>Nome:</label>
+                            <input type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/>
+                        </div>
+                        <div class="campo-input">
+                            <label>Email:</label>
+                            <input type="text" name="email" value="<?php echo htmlspecialchars($recado_editar['email']); ?>"/>
+                        </div>
+                        <div class="campo-input">
+                            <label>Mensagem:</label>
+                            <textarea name="mensagem"><?php echo htmlspecialchars($recado_editar['mensagem']); ?></textarea>
+                        </div>
+                        <input type="hidden" name="id" value="<?php echo $recado_editar['id']; ?>"/>
+                        <div class="btn-mural">
+                            <input type="submit" name="atualiza" value="Modificar Recado" class="btn"/>
+                        </div>
+                    </div>
+            </form>
+        </div>
+        <?php endif; ?>
 
 <?php
-$seleciona = mysqli_query($conexao, "SELECT * FROM shonner ORDER BY id DESC");
+$seleciona = mysqli_query($conexao, "SELECT * FROM recados ORDER BY id DESC");
 if(mysqli_num_rows($seleciona) <= 0){
     echo "<p>Nenhum pedido no mural!</p>";
 }else{
@@ -76,10 +85,7 @@ if(mysqli_num_rows($seleciona) <= 0){
     }
 }
 ?>
-
-<div id="footer">
-</div>
-</div>
-</div>
+    </div>
+</main>
 </body>
 </html>

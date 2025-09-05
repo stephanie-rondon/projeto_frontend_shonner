@@ -2,9 +2,9 @@
 include "conexao.php";
 
 if(isset($_POST['cadastra'])){
-    $nome=msqli_real_escape_string($conexao, $_POST['nome']);
-    $email=msqli_real_escape_string($conexao, $_POST['email']);
-    $mensagem=msqli_real_escape_string($conexao, $_POST['mensagem']);
+    $nome=mysqli_real_escape_string($conexao, $_POST['nome']);
+    $email=mysqli_real_escape_string($conexao, $_POST['email']);
+    $mensagem=mysqli_real_escape_string($conexao, $_POST['mensagem']);
 
     $sql= "insert into recados (nome, email, mensagem) values ('$nome', '$email', '$mensagem')";
     mysqli_query($conexao, $sql) or die ("Erro ao inserir dados: ". mysqli_error($conexao));
@@ -41,20 +41,30 @@ if(isset($_POST['cadastra'])){
 </head>
 <body>
     <main class="mural">
-        <div id="geral">
+        <div id="geral-box">
             <div id="header">
                 <h1>Mural de pedidos</h1>
             </div>
 
             <div id="formulario_mural">
                 <form action="" id="mural" method="post">
-                    <label for="">Nome:</label>
-                    <input type="text" name="nome"><br/>
-                    <label for="">Email:</label>
-                    <input type="text" name="email"><br/>
-                    <label for="">Mensagem:</label>
-                    <textarea name="mensagem" id="">textarea</textarea>
-                    <input type="submit" value="Publicar no mural" name="cadastra" class="btn"><br/>
+                    <div class="items">
+                        <div class="campo-input">
+                            <label for="">Nome:</label>
+                            <input type="text" name="nome">
+                        </div>
+                        <div class="campo-input">
+                            <label for="">Email:</label>
+                            <input type="text" name="email">
+                        </div>
+                        <div class="campo-input">
+                            <label for="">Mensagem:</label>
+                            <textarea name="mensagem" id="">Área de texto.</textarea>
+                        </div>
+                    </div>
+                    <div class="btn-mural">
+                        <input type="submit" value="Publicar no mural" name="cadastra" class="btn">
+                    </div>
                 </form>
             </div>
 

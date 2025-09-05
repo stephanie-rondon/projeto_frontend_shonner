@@ -11,5 +11,5 @@ if(!$conexao){
     die("Erro ao conectar: ". msqli_connect_error());
 }
 
-msqli_set_charset($conexao, "utf8");
+mysqli_set_charset($conexao, "utf8");
 ?>
