@@ -41,29 +41,29 @@ if($editar_id){
 <main class="mural">
     <div id="geral-box">
         <div id="header">
-               <h1>Mural de pedidos</h1>
+               <h1>Mural de recados</h1>
         </div>
         <?php if($recado_editar): ?>
         <div id="formulario_mural">
             <form id="moderar" method="post">
                <div class="items">
-                        <div class="campo-input">
-                            <label>Nome:</label>
-                            <input type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/>
-                        </div>
-                        <div class="campo-input">
-                            <label>Email:</label>
-                            <input type="text" name="email" value="<?php echo htmlspecialchars($recado_editar['email']); ?>"/>
-                        </div>
-                        <div class="campo-input">
-                            <label>Mensagem:</label>
-                            <textarea name="mensagem"><?php echo htmlspecialchars($recado_editar['mensagem']); ?></textarea>
-                        </div>
-                        <input type="hidden" name="id" value="<?php echo $recado_editar['id']; ?>"/>
-                        <div class="btn-mural">
-                            <input type="submit" name="atualiza" value="Modificar Recado" class="btn"/>
-                        </div>
+                    <div class="campo-input">
+                        <label>Nome:</label>
+                        <input type="text" name="nome" value="<?php echo htmlspecialchars($recado_editar['nome']); ?>"/>
                     </div>
+                    <div class="campo-input">
+                        <label>Email:</label>
+                        <input type="text" name="email" value="<?php echo htmlspecialchars($recado_editar['email']); ?>"/>
+                    </div>
+                    <div class="campo-input">
+                        <label>Mensagem:</label>
+                        <textarea name="mensagem"><?php echo htmlspecialchars($recado_editar['mensagem']); ?></textarea>
+                    </div>
+                    <input type="hidden" name="id" value="<?php echo $recado_editar['id']; ?>"/>
+                    <div class="btn-mural">
+                        <input type="submit" name="atualiza" value="Modificar Recado" class="btn"/>
+                    </div>
+                </div>
             </form>
         </div>
         <?php endif; ?>
@@ -71,7 +71,7 @@ if($editar_id){
 <?php
 $seleciona = mysqli_query($conexao, "SELECT * FROM recados ORDER BY id DESC");
 if(mysqli_num_rows($seleciona) <= 0){
-    echo "<p>Nenhum pedido no mural!</p>";
+    echo "<p>Nenhum recado no mural!</p>";
 }else{
     while($res = mysqli_fetch_assoc($seleciona)){
         echo '<ul class="recados">';
