@@ -3,14 +3,51 @@ include "conexao.php";
 
 if(isset($_POST['cadastra'])){
     $nome=mysqli_real_escape_string($conexao, $_POST['nome']);
-    $email=mysqli_real_escape_string($conexao, $_POST['email']);
-    $mensagem=mysqli_real_escape_string($conexao, $_POST['mensagem']);
+    $descricao=mysqli_real_escape_string($conexao, $_POST['descricao']);
+    $preco=floatval($_POST['preco']);
+    $imagem_url="";
 
-    $sql= "insert into recados (nome, email, mensagem) values ('$nome', '$email', '$mensagem')";
+    $sql= "insert into recados (nome) values ('$nome')";
     mysqli_query($conexao, $sql) or die ("Erro ao inserir dados: ". mysqli_error($conexao));
     header("Location: mural.php");
     exit;
 }
+
+if(isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0){
+    $cfile = new CURLFile($_FILES['imagem']['tmp_name'], $_FILES['imagem']['type'], $_FILES['imagem']['name']);
+    $timestamp = time();
+    $string_to_sign = "timestamp=$timestamp$api_secret";
+    $signature = sha1($string_to_sign);
+
+    $data = [
+        'file' => $cfile,
+        'timestamp' => $timestamp,
+        'api_key' => $api_key,
+        'signature' => $signature
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://api.cloudinary.com/v1_1/$cloud_name/image/upload");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    if($response === false){ die("Erro no cURL: " . curl_error($ch)); }
+    curl_close($ch);
+
+    $result = json_decode($response, true);
+    if(isset($result['secure_url'])){
+        $imagem_url = $result['secure_url'];
+    } else {
+        die("Erro no upload: " . print_r($result, true));
+    }  
+      }
+
+      if($imagem_url != ""){
+        $sql = "INSERT INTO produtos (nome, descricao, preco, imagem_url) VALUES ('$nome', '$descricao', $preco, '$imagem_url')";
+        mysqli_query($conexao, $sql) or die("Erro ao inserir: " . mysqli_error($conexao));
+    }
+    
 ?>
 
 <!DOCTYPE html>
